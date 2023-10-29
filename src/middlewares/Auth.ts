@@ -11,17 +11,16 @@ interface CreateTH {
 
 const users = Users()
 const Auth = {
-
   private: async (req: Request, res: Response, next: NextFunction) => {
-    if(!req.headers.token && !req.headers.token){
+    if(!req.headers.token){
         res.json({notAllowed: true});
         return;
     }
 
-    // if(!req.query.hash && !req.body.hash){
-    //     res.json({notAllowed: true});
-    //     return;
-    // }
+    if(!req.headers.hash){
+        res.json({notAllowed: true});
+        return;
+    }
 
     let token: any = '';
     let hash: any = ''; 
@@ -34,26 +33,23 @@ const Auth = {
         return;
     }
 
-    // if(req.query.hash){
-    //     hash = req.query.hash;
-    // }
-    // if(req.body.hash){
-    //     hash = req.body.hash;
-    // }
-    // if(hash == ''){
-    //     res.json({notAllowed:true});
-    //     return;
-    // }
+    if(req.headers.hash){
+        hash = req.headers.hash;
+    }
+    if(hash == ''){
+        res.json({notAllowed:true});
+        return;
+    }
     const userToken = await Auth.validateToken(req.headers.token as string);
     if(!userToken){
        res.json({notAllowed:true});
        return;
     } 
-    // const userHash = await Users.checkHash(userToken.IdPessoa,hash);
-    // if(!userHash){
-    //    res.json({notAllowed:true});
-    //    return;
-    // } 
+    const userHash = await Auth.checkHash(userToken.id,hash);
+    if(!userHash){
+       res.json({notAllowed:true});
+       return;
+    } 
     req.body.idpessoa = userToken.id;
     next();
   },
@@ -90,6 +86,14 @@ const Auth = {
         return e; 
     }
   },
+  checkHash: async (id: string, hash: string): Promise<boolean> =>{
+    const user = await users.findOne({id})
+    if(user.hash ===  hash){
+        return true
+    }else{
+        return false;
+    };
+},
 	createToken: async (id: string): Promise<CreateTH> => {
     const pBase: string = base64.base64encode(JSON.stringify({typ:"JWT", alg:"HS256"}))as string;
     const hBase: string = base64.base64encode(JSON.stringify({id})) as string;
