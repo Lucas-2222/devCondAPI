@@ -1,0 +1,43 @@
+{
+  "name": "DevCondAPI",
+  "version": "1.0.0",
+  "description": "API de consumo do app DevCond",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "nodemon -e ts,json,.env ./server.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/crypto-js": "^4.1.1",
+    "@types/express": "^4.17.14",
+    "@types/nodemailer": "^6.4.6",
+    "@types/uuid": "^9.0.6"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express-fileupload": "^1.4.1",
+    "@types/mongoose": "^5.11.97",
+    "@types/mssql": "^8.1.1",
+    "@types/node": "^18.11.9",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "express-validator": "^6.13.0",
+    "https": "^1.0.0",
+    "jimp": "^0.16.1",
+    "mongoose": "^7.6.3",
+    "mssql": "^7.2.1",
+    "nodejs-base64": "^2.0.0",
+    "nodemailer": "^6.8.0",
+    "nodemon": "^2.0.13",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "uuid": "^8.3.2"
+  }
+}
