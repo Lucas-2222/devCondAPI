@@ -13,12 +13,16 @@ const users = Users()
 const Auth = {
   private: async (req: Request, res: Response, next: NextFunction) => {
     if(!req.headers.token){
-        res.json({notAllowed: true});
+        res.json({response:{
+          notAllowed:true
+        }});
         return;
     }
 
     if(!req.headers.hash){
-        res.json({notAllowed: true});
+        res.json({response:{
+          notAllowed:true
+        }});
         return;
     }
 
@@ -29,7 +33,9 @@ const Auth = {
         token = req.headers.token;
     }
     if(token == ''){
-        res.json({notAllowed:true});
+        res.json({response:{
+          notAllowed:true
+        }});
         return;
     }
 
@@ -37,17 +43,23 @@ const Auth = {
         hash = req.headers.hash;
     }
     if(hash == ''){
-        res.json({notAllowed:true});
+        res.json({response:{
+          notAllowed:true
+        }});
         return;
     }
     const userToken = await Auth.validateToken(req.headers.token as string);
     if(!userToken){
-       res.json({notAllowed:true});
+       res.json({response:{
+        notAllowed:true
+      }});
        return;
     } 
     const userHash = await Auth.checkHash(userToken.id,hash);
     if(!userHash){
-       res.json({notAllowed:true});
+       res.json({response:{
+        notAllowed:true
+      }});
        return;
     } 
     req.body.idpessoa = userToken.id;

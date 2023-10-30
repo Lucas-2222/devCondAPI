@@ -65,6 +65,36 @@ const WallsControllers = {
     } catch (error) {
       res.status(404).json({error})
     }
+  },
+  getOne: async (req: Request, res: Response) => {
+    try {
+      const wall = await walls.findOne({id:req.params.id})
+      if(wall){
+        const date = new Date(wall.dateCreated);
+        const dia = date.getDate();
+        const mes = date.getMonth() + 1;
+        const ano = date.getFullYear();
+        const hora = date.getHours();
+        const minutos = date.getMinutes();
+        res.json({
+          response:{
+            data:{
+              id: wall.id,
+              title: wall.title,
+              dateCreated:`${dia}/${mes}/${ano} ${hora}:${minutos}`,
+              body: wall.body,
+              likes: wall.likes,
+              liked: wall.liked,
+            }
+          }
+        })
+        return;
+      }else{
+        res.json({error: "Mural nao encontrado!!"})
+      }
+    } catch (error) {
+      res.json({error})
+    }
   }
 }
 

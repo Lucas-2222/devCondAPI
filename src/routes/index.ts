@@ -18,5 +18,7 @@ router.get('/properties', Auth.private, PropertiesControllers.getProperties)
 
 //Walls
 router.get('/walls', Auth.private, WallsControllers.getWalls)
+router.get('/walls/:id', Auth.private, WallsControllers.getOne)
 router.post('/walls', Auth.private, WallsControllers.addWalls)
+
 export default router;
