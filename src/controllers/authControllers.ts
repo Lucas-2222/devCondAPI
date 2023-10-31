@@ -73,13 +73,24 @@ const AuthController = {
       const hash  = await bcrypt.hash(fBase as string, 10);
       await users.findOneAndUpdate({id: user.id},{hash})
       res.json({
-        token:user.token,
-        name: user.name,
-        hash
+        response: {
+          token:user.token,
+          name: user.name,
+          hash,
+          error:''
+        }
       })
     } catch (error) {
       
     }
+  },
+  logout: async (req: Request, res: Response) => {
+    await users.findOneAndUpdate({id:req.body.idpessoa},{hash:""})
+    res.json({response:{
+      error:"",
+      infor:"lougot realizado com sucesso!"
+    }})
+
   },
   validate: async (req: Request, res: Response) => {
     const auth = await Auth.validateToken(req.headers.token as string);
@@ -89,7 +100,8 @@ const AuthController = {
     }else{
       res.json({response:{
         validate: true,
-        nome: auth.name
+        name: auth.name,
+        error: ''
       }})
       return;
     }

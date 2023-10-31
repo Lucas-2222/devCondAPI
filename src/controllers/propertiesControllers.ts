@@ -13,7 +13,8 @@ const PropertiesControllers = {
       name:req.body.name
     })
     res.json({response:{
-      info:"Propriedade cadastrada com sucesso!"
+      info:"Propriedade cadastrada com sucesso!",
+      error:""
     }})
   },
   getProperties: async (req: Request, res: Response) => {
@@ -22,7 +23,8 @@ const PropertiesControllers = {
       name: item.name
     }))
     res.json({response:{ 
-      properties:propertie
+      properties:propertie,
+      error:""
     }})
   }
 }

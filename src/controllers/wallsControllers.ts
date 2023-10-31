@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import { validationResult, matchedData } from "express-validator";
 import { v4 as uuidv4 } from 'uuid';
 import Walls from "../models/Walls";
+import Users from "../models/User";
 
 const walls = Walls();
-
+const users = Users();
 const WallsControllers = {
   getWalls: async (req: Request, res: Response) => {
     try {
@@ -12,6 +13,7 @@ const WallsControllers = {
       if (wall){
         res.json({
           response:{
+            error: '',
             data:wall.map((item)=>{
               const date = new Date(item.dateCreated);
               const dia = date.getDate();
@@ -46,9 +48,9 @@ const WallsControllers = {
       const dia = dataAtual.getDate();
       const mes = dataAtual.getMonth() + 1;
       const ano = dataAtual.getFullYear();
-      const hora = dataAtual.getHours();
-      const minutos = dataAtual.getMinutes();
-      const segundos = dataAtual.getSeconds();
+      const hora = dataAtual.getHours().toString().length === 1 ? `0${dataAtual.getHours()}` : dataAtual.getHours();
+      const minutos = dataAtual.getMinutes().toString().length === 1 ? `0${dataAtual.getMinutes()}` : dataAtual.getMinutes();
+      const segundos = dataAtual.getSeconds().toString().length === 1 ? `0${dataAtual.getSeconds()}` : dataAtual.getSeconds();
 
       const wall = await walls.create({
         id:uuid,
@@ -95,6 +97,83 @@ const WallsControllers = {
     } catch (error) {
       res.json({error})
     }
+  },
+  countLikes: async (req: Request, res: Response) => {
+    const agg = [
+      { $match : 
+        { 
+          name : "Carolina" 
+        } 
+      },
+      {
+        $lookup: {
+          from: 'properties', 
+          localField: 'id', 
+          foreignField: 'id', 
+          as: 'propeties'
+        }
+      },
+      {
+        $addFields: {
+            priceWithTax: {
+                $divide: ["$age", 2] 
+            }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          name: 1,
+          id:1,
+          age:1,
+          price: '$priceWithTax',
+          propeties: "$propeties",
+        }
+      },
+    ];
+    const wall = await users.aggregate(agg);
+
+    res.json(wall);
+  },
+  user_properties: async (req: Request, res: Response) => {
+    const agg = [
+      {
+        $match : 
+        { 
+          id: req.body.idpessoa 
+        },  
+      },
+      {
+        $lookup: {
+          from: 'properties', 
+          localField: 'id', 
+          foreignField: 'id', 
+          as: 'result', 
+          pipeline: [
+            {
+              $project: {
+                _id: 0, 
+                name: 1, 
+                idProperties: 1
+              }
+            }
+          ]
+        }
+      }, 
+      {
+        $project: {
+          name: 1, 
+          email: 1, 
+          token: 1, 
+          _id: 0, 
+          properties: '$result'
+        }
+      }
+    ]
+
+    const user = await users.aggregate(agg);
+
+    res.json(user);
   }
 }
 
