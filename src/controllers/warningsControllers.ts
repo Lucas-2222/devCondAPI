@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Warnings from "../models/Warnings";
 import { v4 as uuidv4 } from 'uuid';
 import { FormatDateToString, FormatStringToDate } from "../utils/formatDate";
+import {InsertPhotos} from "./photoContollers";
 
 const warnings = Warnings();
 
@@ -16,15 +17,28 @@ const WarningsControllers = {
         title: req.body.title,
         status: req.body.status
       });
-      res.json({response: {
-        error: '',
-        info: 'Ocorrência cadastrada com sucesso.',
-        idWarning:uuid
-      }})
+      if(req.files?.image){
+        InsertPhotos(req, uuid)
+          .then(()=>{
+            res.json({response: {
+              error: '',
+              info: 'Ocorrência cadastrada com sucesso.',
+              idWarning:uuid
+            }})
+          })
+          .catch((error)=>{
+            res.status(404).json(error);
+          })
+      }else{
+        res.json({response: {
+          error: '',
+          info: 'Ocorrência cadastrada com sucesso.',
+          idWarning:uuid
+        }})
+      }
     } catch (error) {
       res.status(404).json(error);
     }
-    
   },
   getWarnings: async (req: Request, res: Response) => {
     try {

@@ -12,7 +12,7 @@ export const FormatStringToDate = (dateCreated: string): string => {
 
 export const FormatDateToString = () => {
   const dataAtual = new Date();
-  const dia = dataAtual.getDate();
+  const dia = dataAtual.getDate().toString().length === 1 ? `0${dataAtual.getDate()}` : dataAtual.getDate();
   const mes = dataAtual.getMonth() + 1;
   const ano = dataAtual.getFullYear();
   const hora = dataAtual.getHours().toString().length === 1 ? `0${dataAtual.getHours()}` : dataAtual.getHours();

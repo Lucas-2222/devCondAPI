@@ -5,7 +5,7 @@ import PropertiesControllers from '../controllers/propertiesControllers';
 import WallsControllers from '../controllers/wallsControllers';
 import Auth from '../middlewares/Auth';
 import WarningsControllers from '../controllers/warningsControllers';
-import PhotoControllers from '../controllers/photoContollers';
+import {PhotoControllers} from '../controllers/photoContollers';
 
 const router = Router();
 
