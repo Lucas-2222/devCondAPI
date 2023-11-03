@@ -2,10 +2,14 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
 import Reservations from "../models/Reservations";
 import ReservationsType from "../models/ReservationsType";
+import ReservationsDisabled from "../models/ReservationsDisabled";
+
+
 
 const reservationsType = ReservationsType();
 
-const reservationstypeController = {
+const ReservationstypeController = {
+
   getReservationsType: async (req: Request, res: Response) => {
     try {
       const reservationType = await reservationsType.find()
@@ -15,6 +19,7 @@ const reservationstypeController = {
             error: '',
             data:reservationType.map((item)=>{
               return{
+                id: item.id,
                 title: item.title,
                 cover: item.cover,
                 dates: item.dates
@@ -31,7 +36,8 @@ const reservationstypeController = {
   },
   addReservationsType: async (req: Request, res: Response) => {
     try {
-      const reservationTypeAdd = await reservationsType.create({
+      await reservationsType.create({
+        id: uuidv4(),
         cover: req.body.cover,
         title: req.body.title,
         dates: req.body.dates
@@ -48,4 +54,4 @@ const reservationstypeController = {
   }
 }
 
-export default reservationstypeController;
+export {ReservationstypeController};

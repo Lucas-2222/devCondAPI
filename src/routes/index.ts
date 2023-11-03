@@ -6,6 +6,8 @@ import WallsControllers from '../controllers/wallsControllers';
 import Auth from '../middlewares/Auth';
 import WarningsControllers from '../controllers/warningsControllers';
 import {PhotoControllers} from '../controllers/photoContollers';
+import { ReservationstypeController } from '../controllers/reservationstypeController';
+import ReservationsDisabledControllers from '../controllers/reservationsDisabledControllers';
 
 const router = Router();
 
@@ -37,5 +39,13 @@ router.get('/photos', Auth.private, PhotoControllers.getPhotos)
 router.get('/images/:name', (req, res) => {
   res.sendFile(`${__dirname}../public/images/${req.params.name}`);
 });
+
+//reservationsType
+router.get('/reservationstype', Auth.private, ReservationstypeController.getReservationsType)
+router.post('/reservationstype', Auth.private, ReservationstypeController.addReservationsType)
+
+//reservationsDisabled
+router.post('/reservations/dates', Auth.private, ReservationsDisabledControllers.addDisabledDates);
+router.get('/reservations/dates/:id', Auth.private, ReservationsDisabledControllers.getDisabledDates);
 
 export default router;

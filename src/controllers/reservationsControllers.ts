@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from 'uuid';
 import Reservations from "../models/Reservations";
 
 const reservations = Reservations();
+
 const reservationsControllers = {
   getReservations: async (req: Request, res: Response) => {
     try {
@@ -26,7 +26,8 @@ const reservationsControllers = {
     } catch (error) {
       res.status(404).json({error})
     }
-  }
+  },
+ 
 };
 
 export default reservationsControllers;

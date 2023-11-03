@@ -1,15 +1,14 @@
 import { model, Model, connection, Schema } from "mongoose";
 
 const modelSchema = new Schema({
+  disabledDates: String,
   id: String,
-  cover: String,
-  title: String,
-  dates: String
+  idReservationType: String, 
 });
 
-const modelName = 'reservationstype';
+const modelName = 'reservationsDisabled';
 
-const ReservationsType = (): Model<any> => {
+const ReservationsDisabled = (): Model<any> => {
   if(connection && connection.models[modelName]){
     return connection.models[modelName]
   } else {
@@ -17,5 +16,5 @@ const ReservationsType = (): Model<any> => {
   }
 };
 
-export default ReservationsType;
+export default ReservationsDisabled;
 
