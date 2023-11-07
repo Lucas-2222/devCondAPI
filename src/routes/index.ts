@@ -43,6 +43,8 @@ router.get('/images/:name', (req, res) => {
 //reservationsType
 router.get('/reservationstype', Auth.private, ReservationstypeController.getReservationsType)
 router.post('/reservationstype', Auth.private, ReservationstypeController.addReservationsType)
+router.get('/reservationstype/disabledDates', Auth.private, ReservationstypeController.getDisabledDaysType)
+
 
 //reservationsDisabled
 router.post('/reservations/dates', Auth.private, ReservationsDisabledControllers.addDisabledDates);

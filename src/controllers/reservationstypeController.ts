@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
-import Reservations from "../models/Reservations";
 import ReservationsType from "../models/ReservationsType";
-import ReservationsDisabled from "../models/ReservationsDisabled";
-
-
 
 const reservationsType = ReservationsType();
 
@@ -50,6 +46,51 @@ const ReservationstypeController = {
       })
     } catch (error) {
       res.status(404).json(error);
+    }
+  },
+  getDisabledDaysType: async (req: Request, res: Response) => {
+    const agg = [
+      {
+        $lookup:
+          {
+            from: "reservationsdisableds",
+            localField: "id",
+            foreignField: "idReservationType",
+            as: "types",
+            pipeline:[
+              {
+                $project:{
+                  disabledDates:1,
+                  _id:0
+                }
+              }
+            ]
+          },
+      },
+      {
+        $project:{
+          title:1,
+          dates:1,
+          datas: "$types",
+          _id:0
+        }
+      }
+    ]
+
+    const result = await reservationsType.aggregate(agg);
+    if (result){
+      res.json({
+        response:{
+          error:"",
+          result
+        }
+      })
+    }else{
+      res.status(404).json({
+        response:{
+          error:"Algo deu errado, tente novamente."
+        }
+      })
     }
   }
 }

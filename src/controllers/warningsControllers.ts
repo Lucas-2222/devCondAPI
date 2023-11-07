@@ -59,23 +59,22 @@ const WarningsControllers = {
   getWarnigs_phtos: async(req: Request, res: Response) => {
     const agg = [
       {
-        $lookup:
-          {
-            from: "photos",
-            localField: "idWarning",
-            foreignField: "id",
-            as: "photos",
-            pipeline:[
-              {
-                $project:{
-                  name:1,
-                  idPhoto:1,
-                  title:1,
-                  _id:0
-                }
+        $lookup: {
+          from: "photos",
+          localField: "idWarning",
+          foreignField: "id",
+          as: "photos",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                idPhoto: 1,
+                title: 1,
+                _id: 0
               }
-            ]
-          },
+            }
+          ]
+        }
       },
       {
         $addFields: {
@@ -89,23 +88,27 @@ const WarningsControllers = {
       },
       {
         $project: {
-          idWarning:1,
-          title: 1,  
+          idWarning: 1,
+          title: 1,
           status: 1,
           dateCreated: "$dateCreated",
           _id: 0,
           photos: "$photos"
         }
       }
-    ]
+    ];    
 
-    const warning = await warnings.aggregate(agg)
-    res.json({
-      response:{
-        error:"",
-        warning
-      }
-    });
+    try {
+      const warning = await warnings.aggregate(agg)
+      res.json({
+        response:{
+          error:"",
+          warning
+        }
+      });
+    } catch (error) {
+      res.status(404).json(error);
+    }
   }
 }
 
