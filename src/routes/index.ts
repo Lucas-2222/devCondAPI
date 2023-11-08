@@ -8,6 +8,8 @@ import WarningsControllers from '../controllers/warningsControllers';
 import {PhotoControllers} from '../controllers/photoContollers';
 import { ReservationstypeController } from '../controllers/reservationstypeController';
 import ReservationsDisabledControllers from '../controllers/reservationsDisabledControllers';
+import ReservationsTimes from '../models/ReservationsTimes';
+import ReservationTimesController from '../controllers/reservationsTimesControllers';
 
 const router = Router();
 
@@ -49,5 +51,8 @@ router.get('/reservationstype/disabledDates', Auth.private, ReservationstypeCont
 //reservationsDisabled
 router.post('/reservations/dates', Auth.private, ReservationsDisabledControllers.addDisabledDates);
 router.get('/reservations/dates/:id', Auth.private, ReservationsDisabledControllers.getDisabledDates);
+
+//reservationsTimes
+router.get('/reservations/times/:id', Auth.private, ReservationTimesController.getTimes);
 
 export default router;
