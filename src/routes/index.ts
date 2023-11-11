@@ -58,6 +58,6 @@ router.post('/reservationstimes', Auth.private, ReservationTimesController.addTi
 
 //scheldulerReservations
 router.post('/reservationssaved', Auth.private, ReservationTimesController.setReservations);
-router.get('/reservationssaved/:idReservationType/:date', Auth.private, ReservationTimesController.getReservations);
+router.get('/reservationssaved/:idReservationType', Auth.private, ReservationTimesController.getReservations);
 
 export default router;

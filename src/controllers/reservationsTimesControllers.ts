@@ -118,11 +118,7 @@ const ReservationTimesController = {
   },
   getReservations: async(req: Request, res: Response) => {
     try {
-      const reservationsShelduler = await reservationsSaved.find({
-        idReservationType: req.params.idReservationType,
-        idUser: req.body.idpessoa,
-        date: new Date(req.params.date)
-      })
+      const reservationsShelduler = await reservationsSaved.find({idUser: req.body.idpessoa})
 
       if(!reservationsShelduler) {
         res.status(404).json({
