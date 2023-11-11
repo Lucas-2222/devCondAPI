@@ -1,15 +1,16 @@
 import { model, Model, connection, Schema } from "mongoose";
 
 const modelSchema = new Schema({
-  idReservationType: String,
   id: String,
-  initialHour: String,
-  finalHour: String
+  idReservationType: String,
+  idUser: String,
+  date: Date,
+  time: String
 });
 
-const modelName = 'reservationsTimes';
+const modelName = 'reservationsSaved';
 
-const ReservationsTimes = (): Model<any> => {
+const ReservationsSaved = (): Model<any> => {
   if(connection && connection.models[modelName]){
     return connection.models[modelName]
   } else {
@@ -17,4 +18,5 @@ const ReservationsTimes = (): Model<any> => {
   }
 };
 
-export default ReservationsTimes;
+export default ReservationsSaved;
+
