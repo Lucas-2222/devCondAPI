@@ -30,7 +30,6 @@ async function generateTimeSlots(startTime: Date, endTime: Date, interval: numbe
     const timeSlot = `${startHour}:${startMinute.toString().padStart(2, '0')} - ${endHour}:${endMinute.toString().padStart(2, '0')}`;
     const reservationsShelduler = await reservationsSaved.find({
       idReservationType: req.params.idReservationType,
-      idUser: req.body.idpessoa,
       date: new Date(req.params.date),
       time: timeSlot
     })
