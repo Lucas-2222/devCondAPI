@@ -85,22 +85,17 @@ const ReservationTimesController = {
   },
   setReservations: async (req: Request, res: Response) => {
     try {
-      // const reservation = new reservationsSaved({
-      //   id: uuidv4(),
-      //   idReservationType: req.body.idReservationType,
-      //   idUser: req.body.idpessoa,
-      //   date: req.body.date,
-      //   time: req.body.time
-      // });
       await reservationsSaved.create({
         id: uuidv4(),
         idReservationType: req.body.idReservationType,
         idUser: req.body.idpessoa,
         date: new Date(req.body.date),
-        time: req.body.time
+        time: req.body.time,
+        title: req.body.title,
+        cover: req.body.cover,
+        dates: req.body.dates 
       })
 
-      //const savedReservation = await reservation.save();
       res.json({
         response: {
           error: '',
@@ -117,7 +112,40 @@ const ReservationTimesController = {
   },
   getReservations: async(req: Request, res: Response) => {
     try {
-      const reservationsShelduler = await reservationsSaved.find({idUser: req.body.idpessoa})
+      const agg = [
+        {
+          $lookup: {
+            from: "reservationstypes",
+            localField: "idReservationType",
+            foreignField: "id",
+            as: "result",
+            pipeline: [
+              {
+                $project: {
+                  cover: 1,
+                  title: 1,
+                  dates: 1,
+                  _id: 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          $match: { idUser: req.body.idpessoa }
+        },
+        {
+          $project: {
+            id: 1,
+            date: 1,
+            time: 1,
+            idReservationType:1,
+            _id: 0,
+            result: "$result"
+          }
+        }
+      ];
+      const reservationsShelduler = await reservationsSaved.aggregate(agg)
 
       if(!reservationsShelduler) {
         res.status(404).json({
@@ -135,6 +163,7 @@ const ReservationTimesController = {
             idReservationType: item.idReservationType,
             date: item.date,
             time: item.time,
+            ...item.result[0]
           }))
         }
       })
@@ -145,6 +174,17 @@ const ReservationTimesController = {
         }
       })
     }
+  },
+  removeReservation: async (req: Request, res: Response) => {
+    await reservationsSaved.deleteOne({
+      id: req.params.id
+    })
+    res.json({
+      response: {
+        error: '',
+        info: 'Reserva removida com sucesso.'
+      }
+    })
   }
 }
 

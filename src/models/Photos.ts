@@ -1,6 +1,6 @@
 import { model, Schema, connection, Model } from "mongoose";
 
-const modelScrema = new Schema({
+const modelSchema = new Schema({
   name: String,
   id: String,
   idPhoto: String,
@@ -13,7 +13,7 @@ const Photos = (): Model<any> => {
   if(connection && connection.models[modelName]){
     return connection.models[modelName]
   }else{
-    return model(modelName, modelScrema);
+    return model(modelName, modelSchema);
   }
 }
 

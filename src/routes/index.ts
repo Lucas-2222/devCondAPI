@@ -10,6 +10,7 @@ import { ReservationstypeController } from '../controllers/reservationstypeContr
 import ReservationsDisabledControllers from '../controllers/reservationsDisabledControllers';
 import ReservationsTimes from '../models/ReservationsTimes';
 import ReservationTimesController from '../controllers/reservationsTimesControllers';
+import FoundAndLostControllers from '../controllers/foundAndLostControllers';
 
 const router = Router();
 
@@ -57,7 +58,13 @@ router.get('/reservationstimes/:idReservationType/:date', Auth.private, Reservat
 router.post('/reservationstimes', Auth.private, ReservationTimesController.addTimes);
 
 //scheldulerReservations
-router.post('/reservationssaved', Auth.private, ReservationTimesController.setReservations);
-router.get('/reservationssaved/:idReservationType', Auth.private, ReservationTimesController.getReservations);
+router.post('/reservationsmyscreen', Auth.private, ReservationTimesController.setReservations);
+router.get('/reservationsmyscreen', Auth.private, ReservationTimesController.getReservations);
+router.delete('/reservationsmyscreen/:id', Auth.private, ReservationTimesController.removeReservation);
+
+//foundAndLost
+router.post('/foundandlost', Auth.private, FoundAndLostControllers.addFnl);
+router.put('/foundandlost/:id', Auth.private, FoundAndLostControllers.putFnl)
+router.get('/foundandlost', Auth.private, FoundAndLostControllers.getFnl);
 
 export default router;
