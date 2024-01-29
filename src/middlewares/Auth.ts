@@ -61,7 +61,7 @@ const Auth = {
       }});
        return;
     } 
-    req.customValue = userToken?.id;
+    req.headers.idPessoa = userToken?.id;
     next();
   },
   getId: async (token: string) => {
