@@ -1,12 +1,14 @@
 require("dotenv").config();
 import express, {Request, Response} from 'express';
 import path from 'path';
-import router from './src/routes';
+import router from './src/routes/router';
 import { connect, connection } from 'mongoose';
 import cors from 'cors';
 import fileupload from 'express-fileupload';
 import https from 'https';
 import fs from 'fs';
+
+import swaggerDocs from './src/swagger/sawgger';
 
 connect(process.env.DATABASE as string)
 connection.on('error', (error: string)=> {
@@ -25,11 +27,14 @@ server.use(express.json());
 server.use(express.urlencoded({extended: true}));
 server.use(fileupload());
 
+swaggerDocs(server);
 server.use(express.static(path.join(__dirname,'public')));
 server.use('/', router);
-server.use((req: Request, res: Response) =>{
-  res.status(404).send('Página nao encontrada!');
-})
+// server.use((req: Request, res: Response) =>{
+//   res.status(404).send('Página nao encontrada!');
+// })
+
+
 server.listen(process.env.PORT,()=>{
   console.log(`Rodando na porta ${process.env.BASE}`);
 })

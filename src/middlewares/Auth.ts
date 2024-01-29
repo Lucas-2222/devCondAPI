@@ -3,7 +3,6 @@ import base64 from 'nodejs-base64';
 import CryptoJS from 'crypto-js';
 import Users from '../models/User';
 import bcrypt from 'bcrypt';
-
 interface CreateTH {
   token: string;
   hash: string;
@@ -53,7 +52,7 @@ const Auth = {
        res.json({response:{
         notAllowed:true
       }});
-       return;
+      return;
     } 
     const userHash = await Auth.checkHash(userToken.id,hash);
     if(!userHash){
@@ -62,10 +61,10 @@ const Auth = {
       }});
        return;
     } 
-    req.body.idpessoa = userToken.id;
+    req.customValue = userToken?.id;
     next();
   },
-  getId: async (token: string) =>{
+  getId: async (token: string) => {
     try{
       const jwt = token.split('.')
       if(jwt.length === 3){
@@ -105,15 +104,15 @@ const Auth = {
     }else{
         return false;
     };
-},
+  },
 	createToken: async (id: string): Promise<CreateTH> => {
     const pBase: string = base64.base64encode(JSON.stringify({typ:"JWT", alg:"HS256"}))as string;
     const hBase: string = base64.base64encode(JSON.stringify({id})) as string;
     const signature = CryptoJS.AES.encrypt(`${pBase}.${hBase}`,"abc123").toString();
     const fBase = base64.base64encode(signature);
-
     const hash  = await bcrypt.hash(fBase as string, 10);
     const token =  `${pBase}.${hBase}.${fBase}`;
+    
     return{ token, hash }
   },
 }

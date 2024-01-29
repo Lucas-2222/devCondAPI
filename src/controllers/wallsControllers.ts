@@ -140,7 +140,7 @@ const WallsControllers = {
       {
         $match : 
         { 
-          id: req.body.idpessoa 
+          id: req.headers.idpessoa 
         },  
       },
       {

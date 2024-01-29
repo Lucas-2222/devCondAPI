@@ -11,7 +11,7 @@ const WarningsControllers = {
     try {
       const uuid = uuidv4();
       warnings.create({
-        id: req.body.idpessoa,
+        id: req.headers.idpessoa,
         idWarning: uuid,
         dateCreated: FormatDateToString(),
         title: req.body.title,

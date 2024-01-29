@@ -47,6 +47,26 @@ const AuthController = {
     }
   },
   login: async (req: Request, res: Response) => {
+    /*  #swagger.auto = false
+    #swagger.path = '/manual/users/{id}'
+    #swagger.method = 'POST'
+    #swagger.description = 'Endpoint de login na aplicacao.'
+    #swagger.produces = ["application/json"]
+    #swagger.consumes = ["application/json"]
+    */
+    /*  #swagger.parameters['email'] = {
+        in: 'header',
+        description: 'Email do usuario.',
+        required: true
+        }
+    */
+    /*  #swagger.parameters['password'] = {
+        in: 'header',
+        description: 'Senha do usuario.',
+        required: true, 
+        type: 'string'
+        }
+    */
     try {
       const errors = validationResult(req);
       if(!errors.isEmpty()){
@@ -85,7 +105,7 @@ const AuthController = {
     }
   },
   logout: async (req: Request, res: Response) => {
-    await users.findOneAndUpdate({id:req.body.idpessoa},{hash:""})
+    await users.findOneAndUpdate({id:req.headers.idpessoa},{hash:""})
     res.json({response:{
       error:"",
       infor:"lougot realizado com sucesso!"

@@ -88,7 +88,7 @@ const ReservationTimesController = {
       await reservationsSaved.create({
         id: uuidv4(),
         idReservationType: req.body.idReservationType,
-        idUser: req.body.idpessoa,
+        idUser: req.headers.idpessoa,
         date: new Date(req.body.date),
         time: req.body.time,
         title: req.body.title,
@@ -132,7 +132,7 @@ const ReservationTimesController = {
           }
         },
         {
-          $match: { idUser: req.body.idpessoa }
+          $match: { idUser: req.headers.idpessoa }
         },
         {
           $project: {

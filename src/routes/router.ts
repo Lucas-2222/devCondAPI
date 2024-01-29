@@ -1,4 +1,4 @@
-import {Router, Request, Response} from 'express';
+import {Router} from 'express';
 import AuthValidators from '../validators/authValidators';
 import AuthController from '../controllers/authControllers';
 import PropertiesControllers from '../controllers/propertiesControllers';
@@ -11,13 +11,13 @@ import ReservationsDisabledControllers from '../controllers/reservationsDisabled
 import ReservationsTimes from '../models/ReservationsTimes';
 import ReservationTimesController from '../controllers/reservationsTimesControllers';
 import FoundAndLostControllers from '../controllers/foundAndLostControllers';
-
+import RedisController from '../controllers/redisControllers';
 const router = Router();
 
-//Autenticacao
-router.post('/auth/signup', AuthValidators.signup,  AuthController.register)
+
+router.post('/auth/signup', AuthValidators.signup,  AuthController.register) 
 router.post('/auth/validate', Auth.private, AuthController.validate)
-router.post('/auth/signin', AuthValidators.signin, AuthController.login)
+router.post('/auth/signin', AuthValidators.signin, AuthController.login);
 router.post('/auth/logout', Auth.private, AuthController.logout)
 
 //properties
@@ -66,5 +66,8 @@ router.delete('/reservationsmyscreen/:id', Auth.private, ReservationTimesControl
 router.post('/foundandlost', Auth.private, FoundAndLostControllers.addFnl);
 router.put('/foundandlost/:id', Auth.private, FoundAndLostControllers.putFnl)
 router.get('/foundandlost', Auth.private, FoundAndLostControllers.getFnl);
+
+router.post('/redis', Auth.private, RedisController.sucessScreen);
+router.post('/redis/add', RedisController.addData);
 
 export default router;

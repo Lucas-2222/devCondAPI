@@ -8,7 +8,7 @@ const PropertiesControllers = {
   addProperties: async (req: Request, res: Response) =>{
     const uuid = uuidv4();
     properties.create({
-      id:req.body.idpessoa,
+      id:req.headers.idpessoa,
       idProperties:uuid,
       name:req.body.name
     })
@@ -18,7 +18,7 @@ const PropertiesControllers = {
     }})
   },
   getProperties: async (req: Request, res: Response) => {
-    const propertie = (await properties.find({id:req.body.idpessoa})).map((item)=>({
+    const propertie = (await properties.find({id:req.headers.idpessoa})).map((item)=>({
       idProperties:item.idProperties,
       name: item.name
     }))
